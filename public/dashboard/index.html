@@ -194,7 +194,7 @@
     <h2>BTC Indicators</h2>
     <div class="cgrid c3">
       <div class="cbox"><h3 id="ivTitle">IV Z-Score</h3><canvas id="ivChart"></canvas></div>
-      <div class="cbox"><h3>ETF Flows (Cumulative)</h3><canvas id="flowChart"></canvas></div>
+      <div class="cbox"><h3>BTC ETF Inflow / Outflow</h3><canvas id="flowChart"></canvas></div>
       <div class="cbox"><h3>Historical Volatility (30d Rolling)</h3><canvas id="volChart"></canvas></div>
     </div>
   </div>
@@ -555,7 +555,14 @@ function renderStats() {
   }
 
   if (D.flows) {
-    cards.push(`<div class="stat"><div class="lbl">ETF Flow 30d</div><div class="val">${fmtDollar(D.flows.recent30d)}</div><div class="sub">7d: ${fmtDollar(D.flows.recent7d)}</div></div>`);
+    const f30cls = D.flows.recent30d >= 0 ? 'up' : 'dn';
+    const f7cls = D.flows.recent7d >= 0 ? 'up' : 'dn';
+    const f30sign = D.flows.recent30d >= 0 ? '+' : '';
+    const f7sign = D.flows.recent7d >= 0 ? '+' : '';
+    cards.push(`<div class="stat"><div class="lbl">BTC ETF 30d</div><div class="val ${f30cls}">${f30sign}${fmtDollar(D.flows.recent30d)}</div><div class="sub ${f7cls}">7d: ${f7sign}${fmtDollar(D.flows.recent7d)}</div></div>`);
+    const netCls = D.flows.netFlowEstimate >= 0 ? 'up' : 'dn';
+    const netSign = D.flows.netFlowEstimate >= 0 ? '+' : '';
+    cards.push(`<div class="stat"><div class="lbl">Net Flow (All Time)</div><div class="val ${netCls}">${netSign}${fmtDollar(D.flows.netFlowEstimate)}</div><div class="sub">Vol: ${fmtDollar(D.flows.totalDollarVolume)}</div></div>`);
   }
   if (D.ma && D.ma.ma200wk) {
     cards.push(`<div class="stat"><div class="lbl">200wk MA</div><div class="val">${fmtDollar(D.ma.ma200wk)}</div><div class="sub">${D.ma.pctAbove > 0 ? '+' : ''}${D.ma.pctAbove.toFixed(1)}% above</div></div>`);
@@ -606,18 +613,52 @@ function renderIV() {
 
 function renderFlows() {
   // ETF flows are daily-only; use min 30 data points so chart isn't empty
-  let flows = filterSeries((D.flows.dailyFlows||[]).map(d=>({t:d.timestamp,c:d.cumulative})), R);
-  if (flows.length < 3) flows = (D.flows.dailyFlows||[]).slice(-30).map(d=>({t:d.timestamp,c:d.cumulative}));
+  let raw = (D.flows.dailyFlows||[]).map(d=>({t:d.timestamp,f:d.flow,c:d.cumulative}));
+  let flows = filterSeries(raw, R);
+  if (flows.length < 3) flows = raw.slice(-30);
+
+  // Daily bar colours: green for inflow, red for outflow
+  const barColors = flows.map(d => d.f >= 0 ? 'rgba(68,170,68,0.6)' : 'rgba(170,68,68,0.6)');
+  const barBorders = flows.map(d => d.f >= 0 ? '#4a4' : '#a44');
+
   destroyChart('flow');
+  const opts = mkOpts(v => fmtDollar(v));
+  // Dual y-axes: left for daily bars, right for cumulative line
+  opts.scales.y = { position: 'left', grid: { color: '#2a2a2a' }, ticks: { color: '#aaa', font: { size: 10 }, callback: v => fmtDollar(v) }, border: { color: '#555' } };
+  opts.scales.y2 = { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#666', font: { size: 10 }, callback: v => fmtDollar(v) }, border: { color: '#333' } };
+  opts.plugins.tooltip.callbacks = {
+    label: function(ctx) {
+      const v = ctx.parsed.y;
+      return ctx.dataset.label + ': ' + (v >= 0 ? '+' : '') + fmtDollar(v);
+    }
+  };
+
   charts.flow = new Chart(document.getElementById('flowChart'), {
-    type:'line',
-    data: { datasets: [{
-      label:'Cumulative Flow',
-      data: flows.map(d=>({x:d.t,y:d.c})),
-      borderColor:'#fff', borderWidth:1.2, pointRadius:0, tension:0.15,
-      fill:true, backgroundColor:'rgba(255,255,255,0.03)',
-    }]},
-    options: mkOpts(v => fmtDollar(v)),
+    type: 'bar',
+    data: { datasets: [
+      {
+        label: 'Daily Flow',
+        data: flows.map(d => ({x: d.t, y: d.f})),
+        backgroundColor: barColors,
+        borderColor: barBorders,
+        borderWidth: 1,
+        yAxisID: 'y',
+        order: 2,
+      },
+      {
+        label: 'Cumulative',
+        type: 'line',
+        data: flows.map(d => ({x: d.t, y: d.c})),
+        borderColor: '#fff',
+        borderWidth: 1.2,
+        pointRadius: 0,
+        tension: 0.15,
+        fill: false,
+        yAxisID: 'y2',
+        order: 1,
+      },
+    ]},
+    options: opts,
   });
 }
 
