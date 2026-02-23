@@ -1,4 +1,4 @@
-const { STORE_NAME, json, error, options, getStore } = require("./helpers");
+const { json, error, options, getBlobStore } = require("./helpers");
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return options();
@@ -6,7 +6,7 @@ exports.handler = async (event) => {
   const key = event.queryStringParameters?.key;
 
   try {
-    const store = getStore(STORE_NAME);
+    const store = getBlobStore();
 
     // If a specific key is requested, return that snapshot
     if (key) {

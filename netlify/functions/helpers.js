@@ -24,8 +24,16 @@ function options() {
   return { statusCode: 204, headers: CORS_HEADERS, body: "" };
 }
 
+function getBlobStore() {
+  return getStore({
+    name: STORE_NAME,
+    siteID: process.env.BLOB_SITE_ID,
+    token: process.env.BLOB_TOKEN,
+  });
+}
+
 async function getLatestSnapshot() {
-  const store = getStore(STORE_NAME);
+  const store = getBlobStore();
   const { blobs } = await store.list();
   if (!blobs.length) return null;
   // Keys are ISO timestamps sorted lexicographically — last is newest
@@ -35,4 +43,4 @@ async function getLatestSnapshot() {
   return { key: latestKey, data };
 }
 
-module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, getStore };
+module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, getBlobStore };
