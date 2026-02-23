@@ -1,17 +1,10 @@
-const { getStore } = require("@netlify/blobs");
-const { json, error, options } = require("./helpers");
+const { json, error, options, getBlob } = require("./helpers");
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return options();
 
   try {
-    const store = getStore({
-      name: "market-data",
-      siteID: process.env.BLOB_SITE_ID,
-      token: process.env.BLOB_TOKEN,
-    });
-
-    const data = await store.get("latest", { type: "json" });
+    const data = await getBlob("market-data", "latest");
     if (!data) return error("No market data available", 404);
 
     return json(data);

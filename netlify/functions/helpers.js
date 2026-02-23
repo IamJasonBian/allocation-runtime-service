@@ -1,5 +1,4 @@
-const { getStore } = require("@netlify/blobs");
-
+const BLOBS_URL = "https://api.netlify.com/api/v1/blobs";
 const STORE_NAME = "order-book";
 
 const CORS_HEADERS = {
@@ -24,23 +23,37 @@ function options() {
   return { statusCode: 204, headers: CORS_HEADERS, body: "" };
 }
 
-function getBlobStore() {
-  return getStore({
-    name: STORE_NAME,
-    siteID: process.env.BLOB_SITE_ID,
-    token: process.env.BLOB_TOKEN,
-  });
+function blobHeaders() {
+  return { Authorization: `Bearer ${process.env.BLOB_TOKEN}` };
+}
+
+function blobUrl(store, key) {
+  const siteId = process.env.BLOB_SITE_ID;
+  return key
+    ? `${BLOBS_URL}/${siteId}/${store}/${key}`
+    : `${BLOBS_URL}/${siteId}/${store}`;
+}
+
+async function listBlobs(store) {
+  const resp = await fetch(blobUrl(store), { headers: blobHeaders() });
+  if (!resp.ok) throw new Error(`List blobs failed: ${resp.status}`);
+  const data = await resp.json();
+  return Array.isArray(data) ? data : data.blobs || [];
+}
+
+async function getBlob(store, key) {
+  const resp = await fetch(blobUrl(store, key), { headers: blobHeaders() });
+  if (!resp.ok) return null;
+  return resp.json();
 }
 
 async function getLatestSnapshot() {
-  const store = getBlobStore();
-  const { blobs } = await store.list();
+  const blobs = await listBlobs(STORE_NAME);
   if (!blobs.length) return null;
-  // Keys are ISO timestamps sorted lexicographically — last is newest
-  const sorted = blobs.map((b) => b.key).sort();
-  const latestKey = sorted[sorted.length - 1];
-  const data = await store.get(latestKey, { type: "json" });
+  const keys = blobs.map((b) => b.key).sort();
+  const latestKey = keys[keys.length - 1];
+  const data = await getBlob(STORE_NAME, latestKey);
   return { key: latestKey, data };
 }
 
-module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, getBlobStore };
+module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, listBlobs, getBlob };
