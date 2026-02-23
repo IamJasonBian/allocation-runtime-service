@@ -761,7 +761,7 @@ function render() {
 /* ── data fetch ── */
 async function refresh() {
   try {
-    const resp = await fetch('market_data.json?t=' + Date.now());
+    const resp = await fetch('/api/dashboard-data?t=' + Date.now());
     if (!resp.ok) throw new Error('not found');
     D = await resp.json();
     const age = (Date.now() - new Date(D.updated_at).getTime()) / 1000;
