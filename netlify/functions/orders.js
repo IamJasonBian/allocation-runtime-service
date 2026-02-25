@@ -11,11 +11,14 @@ exports.handler = async (event) => {
     const orders = data.order_book || [];
     const optionsList = data.options || [];
 
+    const machineOrderCount = orders.filter(o => o.source === 'engine').length;
+
     return json({
       snapshot_key: key,
       timestamp: data.timestamp,
       stock_orders: orders,
       stock_order_count: orders.length,
+      machine_order_count: machineOrderCount,
       options: optionsList,
       options_count: optionsList.length,
     });
