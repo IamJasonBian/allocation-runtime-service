@@ -1,0 +1,35 @@
+# GitHub Actions CI for allocation-runtime-service
+# Copy this file to allocation-runtime-service/.github/workflows/ci.yml
+#
+# Validates the OpenAPI spec on PRs and pushes.
+# Deploys are handled by Netlify's built-in Git integration (no secrets needed).
+
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate OpenAPI spec
+        run: npx @redocly/cli lint public/swagger/openapi.yaml --skip-rule no-unused-components
