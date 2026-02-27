@@ -23,15 +23,17 @@ function options() {
   return { statusCode: 204, headers: CORS_HEADERS, body: "" };
 }
 
+// 5thstreetcapital Netlify site where allocation-engine writes snapshots
+const BLOB_SITE_ID = "3d014fc3-e919-4b4d-b374-e8606dee50df";
+
 function blobHeaders() {
-  return { Authorization: `Bearer ${process.env.BLOB_TOKEN}` };
+  return { Authorization: `Bearer ${process.env.NETLIFY_AUTH_TOKEN}` };
 }
 
 function blobUrl(store, key) {
-  const siteId = process.env.BLOB_SITE_ID;
   return key
-    ? `${BLOBS_URL}/${siteId}/${store}/${key}`
-    : `${BLOBS_URL}/${siteId}/${store}`;
+    ? `${BLOBS_URL}/${BLOB_SITE_ID}/${store}/${key}`
+    : `${BLOBS_URL}/${BLOB_SITE_ID}/${store}`;
 }
 
 async function listBlobs(store) {
