@@ -71,7 +71,8 @@ async function handlePut(event) {
     return error("Request body is required", 400);
   }
 
-  const key = `${service}/${date}`;
+  const ts = Math.floor(Date.now() / 1000);
+  const key = `${service}/${date}/${ts}`;
   const encodedKey = encodeURIComponent(key);
 
   const resp = await fetch(blobUrl(ONCALL_STORE, encodedKey), {

@@ -513,7 +513,7 @@ components:
           example: Oncall log stored
         key:
           type: string
-          example: allocation-engine-2.0/2026-03-02
+          example: allocation-engine-2.0/2026-03-02/1740960000
 
     McpContextResponse:
       type: object
