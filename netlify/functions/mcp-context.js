@@ -2,32 +2,46 @@ const { json, error, options, listBlobs, blobUrl, blobHeaders } = require("./hel
 
 const ONCALL_STORE = "oncall";
 
+// Blob keys come back with %2F instead of / — decode for display/filtering
+function decodeKey(raw) {
+  return decodeURIComponent(raw);
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return options();
 
   try {
     const service = event.queryStringParameters?.service;
+    const blobs = await listBlobs(ONCALL_STORE);
+
+    // Build a map of decoded key -> raw key
+    const entries = blobs.map((b) => {
+      const decoded = decodeKey(b.key);
+      const parts = decoded.split("/");
+      return { rawKey: b.key, decoded, service: parts[0], timestamp: parts.slice(1).join("/") };
+    });
 
     if (!service) {
-      const blobs = await listBlobs(ONCALL_STORE);
-      const entries = blobs.map((b) => {
-        const parts = b.key.split("/");
-        return { key: b.key, service: parts[0], timestamp: parts.slice(1).join("/") };
+      return json({
+        count: entries.length,
+        entries: entries.map(({ decoded, service, timestamp }) => ({
+          key: decoded,
+          service,
+          timestamp,
+        })),
       });
-      return json({ count: entries.length, entries });
     }
 
-    const blobs = await listBlobs(ONCALL_STORE);
-    const serviceBlobs = blobs.filter((b) => b.key.startsWith(`${service}/`));
+    const serviceEntries = entries.filter((e) => e.service === service);
 
-    if (!serviceBlobs.length) {
+    if (!serviceEntries.length) {
       return error(`No oncall logs found for service: ${service}`, 404);
     }
 
-    const keys = serviceBlobs.map((b) => b.key).sort();
-    const latestKey = keys[keys.length - 1];
+    serviceEntries.sort((a, b) => a.decoded.localeCompare(b.decoded));
+    const latest = serviceEntries[serviceEntries.length - 1];
 
-    const resp = await fetch(blobUrl(ONCALL_STORE, latestKey), {
+    const resp = await fetch(blobUrl(ONCALL_STORE, latest.rawKey), {
       headers: blobHeaders(),
     });
     if (!resp.ok) return error(`Failed to fetch oncall log: ${resp.status}`, 500);
@@ -39,8 +53,8 @@ exports.handler = async (event) => {
 
     return json({
       service,
-      key: latestKey,
-      available_logs: keys,
+      key: latest.decoded,
+      available_logs: serviceEntries.map((e) => e.decoded),
       latest_log: content,
     });
   } catch (e) {
