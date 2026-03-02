@@ -88,8 +88,20 @@ async function handlePut(event) {
   return json({ message: "Oncall log stored", key }, 201);
 }
 
+function authenticate(event) {
+  const auth = event.headers["authorization"] || event.headers["Authorization"] || "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!token || token !== process.env.NETLIFY_AUTH_TOKEN) {
+    return error("Unauthorized — provide Authorization: Bearer <NETLIFY_AUTH_TOKEN>", 401);
+  }
+  return null;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return options();
+
+  const authError = authenticate(event);
+  if (authError) return authError;
 
   try {
     if (event.httpMethod === "GET") return await handleGet(event);
