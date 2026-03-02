@@ -58,4 +58,14 @@ async function getLatestSnapshot() {
   return { key: latestKey, data };
 }
 
-module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, listBlobs, getBlob };
+async function putBlob(store, key, value, contentType = "application/json") {
+  const body = contentType === "application/json" ? JSON.stringify(value) : value;
+  const resp = await fetch(blobUrl(store, key), {
+    method: "PUT",
+    headers: { ...blobHeaders(), "Content-Type": contentType },
+    body,
+  });
+  if (!resp.ok) throw new Error(`Put blob failed: ${resp.status}`);
+}
+
+module.exports = { STORE_NAME, json, error, options, getLatestSnapshot, listBlobs, getBlob, putBlob, blobUrl, blobHeaders, BLOB_SITE_ID };

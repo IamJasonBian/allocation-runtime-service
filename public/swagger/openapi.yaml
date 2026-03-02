@@ -147,6 +147,36 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /mcp-context:
+    get:
+      summary: Oncall service context
+      description: |
+        Returns oncall chat logs for a given service. Without a service parameter,
+        lists all available oncall entries. With a service name, returns the latest
+        log and all available timestamps.
+      operationId: getMcpContext
+      tags: [Oncall]
+      parameters:
+        - name: service
+          in: query
+          required: false
+          description: "Service name (e.g. allocation-engine-2.0)"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Oncall context logs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/McpContextResponse"
+        "404":
+          description: No oncall logs found for service
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Error:
@@ -432,6 +462,38 @@ components:
           items:
             type: string
           description: Snapshot keys (most recent 50), newest first
+
+    McpContextResponse:
+      type: object
+      properties:
+        service:
+          type: string
+          example: allocation-engine-2.0
+        key:
+          type: string
+          description: Blob key for the latest oncall log
+        available_logs:
+          type: array
+          items:
+            type: string
+          description: All available log keys for this service
+        latest_log:
+          description: Content of the latest oncall chat log (text or JSON)
+        count:
+          type: integer
+          description: Total number of oncall entries (when listing all)
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              service:
+                type: string
+              timestamp:
+                type: string
+          description: All oncall entries across services (when listing all)
 
     SnapshotResponse:
       type: object
