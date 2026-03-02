@@ -53,6 +53,11 @@
   to = "/.netlify/functions/snapshots?key=:key"
   status = 200
 
+[[redirects]]
+  from = "/api/mcp-context"
+  to = "/.netlify/functions/mcp-context"
+  status = 200
+
 # Swagger UI
 [[redirects]]
   from = "/docs"
