@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.baku.screenshot-watcher</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/node</string>
+        <string>/Users/jasonzb/conductor/workspaces/allocation-runtime-service-v1/baku/scripts/screenshot-watcher.js</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- Set your Netlify auth token here, or use `netlify env:get NETLIFY_AUTH_TOKEN` -->
+        <key>NETLIFY_AUTH_TOKEN</key>
+        <string>YOUR_TOKEN_HERE</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/tmp/screenshot-watcher.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/tmp/screenshot-watcher.err</string>
+</dict>
+</plist>

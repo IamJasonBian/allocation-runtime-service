@@ -42,6 +42,23 @@ async function handleGet(event) {
   if (!resp.ok) return error(`Failed to fetch oncall log: ${resp.status}`, 500);
 
   const ct = resp.headers.get("content-type") || "";
+  const isImage = ct.startsWith("image/");
+
+  if (isImage) {
+    const buf = Buffer.from(await resp.arrayBuffer());
+    return json({
+      service,
+      key: latest.decoded,
+      available_logs: serviceEntries.map((e) => e.decoded),
+      latest_log: {
+        type: "image",
+        content_type: ct,
+        data_base64: buf.toString("base64"),
+        filename: latest.decoded.split("/").pop(),
+      },
+    });
+  }
+
   const content = ct.includes("application/json")
     ? await resp.json()
     : await resp.text();
@@ -71,14 +88,22 @@ async function handlePut(event) {
     return error("Request body is required", 400);
   }
 
+  const contentType = event.headers["content-type"] || event.headers["Content-Type"] || "text/plain";
+  const isImage = contentType.startsWith("image/");
+
   const ts = Math.floor(Date.now() / 1000);
-  const key = `${service}/${date}/${ts}`;
+  const suffix = isImage ? `.${contentType.split("/")[1].replace("jpeg", "jpg")}` : "";
+  const key = `${service}/${date}/${ts}${suffix}`;
   const encodedKey = encodeURIComponent(key);
+
+  // For images, store the raw binary (base64-decoded by Netlify automatically when isBase64Encoded)
+  const storeBody = event.isBase64Encoded ? Buffer.from(body, "base64") : body;
+  const storeContentType = isImage ? contentType : "text/plain";
 
   const resp = await fetch(blobUrl(ONCALL_STORE, encodedKey), {
     method: "PUT",
-    headers: { ...blobHeaders(), "Content-Type": "text/plain" },
-    body,
+    headers: { ...blobHeaders(), "Content-Type": storeContentType },
+    body: storeBody,
   });
 
   if (!resp.ok) {

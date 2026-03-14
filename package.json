@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Swagger API endpoints for allocation engine trading system",
+  "scripts": {
+    "watch-screenshots": "node scripts/screenshot-watcher.js"
+  },
   "dependencies": {
     "@netlify/blobs": "^8.1.0"
   }
