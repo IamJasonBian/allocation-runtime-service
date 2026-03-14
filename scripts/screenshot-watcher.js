@@ -30,7 +30,7 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-const WATCH_DIR = process.env.WATCH_DIR || path.join(process.env.HOME, "Desktop");
+const WATCH_DIR = process.env.WATCH_DIR || path.join(process.env.HOME, "Screenshots");
 const API_URL = process.env.API_URL || "https://route-runtime-service.netlify.app";
 const SERVICE = process.env.SERVICE_NAME || "allocation-engine-2.0";
 const POLL_MS = (parseFloat(process.env.POLL_INTERVAL) || 1) * 1000;
