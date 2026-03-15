@@ -230,6 +230,9 @@ const COLORS = {
   'DIA':     '#f96',
   'IWM':     '#6f9',
   'EFA':     '#f69',
+  'CB':      '#9cf',
+  'AVDV':    '#cf9',
+  'ISRA':    '#fc9',
 };
 
 /* ── helpers ── */
@@ -331,7 +334,7 @@ function renderFocus() {
 /* ── render instrument table ── */
 function renderTable() {
   const el = document.getElementById('instTable');
-  const syms = ['BTC','BTC/USD','QQQ','SPY','GLD','DIA','IWM','EFA'];
+  const syms = ['BTC','BTC/USD','QQQ','SPY','GLD','DIA','IWM','EFA','CB','AVDV','ISRA'];
   let html = '<table><thead><tr><th>Instrument</th><th>Symbol</th><th style="text-align:right">Price</th><th style="text-align:right">Chg</th><th style="text-align:right">Chg %</th><th style="text-align:right">Open</th><th style="text-align:right">High</th><th style="text-align:right">Low</th><th style="text-align:right">Volume</th></tr></thead><tbody>';
   for (const sym of syms) {
     const q = D.quotes[sym];
@@ -359,7 +362,7 @@ function renderCorr() {
   const wrap = document.getElementById('corrWrap');
   const wKey = CORR_WINDOW[R] || '5';
   const cData = (D.correlations || {})[wKey] || {};
-  const ref = ['QQQ','SPY','GLD','DIA','IWM','EFA'];
+  const ref = ['QQQ','SPY','GLD','DIA','IWM','EFA','CB','AVDV','ISRA'];
   const focus = ['BTC','BTC/USD'];
 
   let html = `<h2>Correlation Matrix (${RANGE_CFG[R].label})</h2><div class="corr"><table><thead><tr><th></th>`;
@@ -383,7 +386,7 @@ function renderCorr() {
 function renderMoveChart() {
   const cfg = RANGE_CFG[R];
   const sourceKey = cfg.useHourly ? 'hourly' : 'daily';
-  const syms = ['BTC/USD','QQQ','SPY','GLD','DIA','IWM','EFA'];
+  const syms = ['BTC/USD','QQQ','SPY','GLD','DIA','IWM','EFA','CB','AVDV','ISRA'];
   const datasets = [];
 
   // Store base prices for right-axis price labels
