@@ -219,7 +219,189 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /blob-upload/init:
+    post:
+      summary: Initialize chunked zip upload
+      description: |
+        Starts a new chunked upload session for a zip file. Returns an `uploadId`
+        to use with subsequent chunk uploads. Recommended chunk size is 4MB to stay
+        safely within Netlify's 6MB request limit.
+      operationId: initBlobUpload
+      tags: [Blob Upload]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [service, date, filename, totalChunks]
+              properties:
+                service:
+                  type: string
+                  description: Target service name
+                  example: allocation-engine-2.0
+                date:
+                  type: string
+                  pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+                  description: Date in YYYY-MM-DD format
+                  example: "2026-03-16"
+                filename:
+                  type: string
+                  description: Original filename (must end in .zip)
+                  example: screenshots-batch.zip
+                totalChunks:
+                  type: integer
+                  minimum: 1
+                  maximum: 500
+                  description: Number of chunks the file will be split into
+                  example: 5
+                totalBytes:
+                  type: integer
+                  description: Total file size in bytes (optional, for tracking)
+                  example: 20971520
+      responses:
+        "201":
+          description: Upload session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlobUploadInitResponse"
+        "400":
+          description: Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /blob-upload/chunk:
+    put:
+      summary: Upload a single chunk
+      description: |
+        Uploads one chunk of a file. Send the raw binary data as the request body.
+        Each chunk must be under 4MB. Chunks can be uploaded in any order and
+        concurrently for faster uploads.
+      operationId: uploadBlobChunk
+      tags: [Blob Upload]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          description: Upload session ID from /init
+          schema:
+            type: string
+        - name: index
+          in: query
+          required: true
+          description: Zero-based chunk index
+          schema:
+            type: integer
+            minimum: 0
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+              description: Raw chunk bytes (max 4MB)
+      responses:
+        "200":
+          description: Chunk received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlobUploadChunkResponse"
+        "404":
+          description: Upload session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "413":
+          description: Chunk exceeds max size
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /blob-upload/complete:
+    post:
+      summary: Complete chunked upload
+      description: |
+        Reassembles all uploaded chunks into the final zip blob and stores it
+        in the oncall blob store. All chunks must be uploaded before calling this.
+        Chunk blobs are cleaned up automatically after assembly.
+      operationId: completeBlobUpload
+      tags: [Blob Upload]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          description: Upload session ID from /init
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Upload assembled and stored
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlobUploadCompleteResponse"
+        "400":
+          description: Missing chunks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Upload session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /blob-upload/status:
+    get:
+      summary: Check upload progress
+      description: Returns the current status and chunk progress for an upload session.
+      operationId: getBlobUploadStatus
+      tags: [Blob Upload]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: uploadId
+          in: query
+          required: true
+          description: Upload session ID from /init
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Upload status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlobUploadStatusResponse"
+        "404":
+          description: Upload session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Netlify auth token (NETLIFY_AUTH_TOKEN)
+
   schemas:
     Error:
       type: object
@@ -546,6 +728,86 @@ components:
               timestamp:
                 type: string
           description: All oncall entries across services (when listing all)
+
+    BlobUploadInitResponse:
+      type: object
+      properties:
+        uploadId:
+          type: string
+          description: Unique upload session identifier
+          example: "1710590400000-a3f2k9"
+        totalChunks:
+          type: integer
+          example: 5
+        maxChunkBytes:
+          type: integer
+          description: Maximum allowed bytes per chunk
+          example: 4194304
+
+    BlobUploadChunkResponse:
+      type: object
+      properties:
+        uploadId:
+          type: string
+        chunkIndex:
+          type: integer
+          description: The index of the chunk just received
+        chunkSize:
+          type: integer
+          description: Bytes received for this chunk
+        chunksReceived:
+          type: integer
+          description: Total chunks received so far
+        totalChunks:
+          type: integer
+        complete:
+          type: boolean
+          description: True when all chunks have been received
+
+    BlobUploadCompleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Upload complete
+        key:
+          type: string
+          description: Final blob key in the oncall store
+          example: "allocation-engine-2.0/2026-03-16/1710590400-screenshots-batch.zip"
+        totalBytes:
+          type: integer
+          description: Total assembled file size in bytes
+        totalChunks:
+          type: integer
+
+    BlobUploadStatusResponse:
+      type: object
+      properties:
+        uploadId:
+          type: string
+        status:
+          type: string
+          enum: [in_progress, completed]
+        filename:
+          type: string
+        totalChunks:
+          type: integer
+        chunksReceived:
+          type: integer
+        totalBytes:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        finalKey:
+          type: string
+          nullable: true
+          description: Blob key of the assembled file (only after completion)
 
     SnapshotResponse:
       type: object
