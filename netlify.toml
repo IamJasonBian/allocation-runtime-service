@@ -58,6 +58,17 @@
   to = "/.netlify/functions/mcp-context"
   status = 200
 
+# Chunked blob upload (init, chunk, complete, status)
+[[redirects]]
+  from = "/api/blob-upload/*"
+  to = "/.netlify/functions/blob-upload"
+  status = 200
+
+[[redirects]]
+  from = "/api/blob-upload"
+  to = "/.netlify/functions/blob-upload"
+  status = 200
+
 # Swagger UI
 [[redirects]]
   from = "/docs"
@@ -68,6 +79,6 @@
   for = "/api/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, PUT, OPTIONS"
+    Access-Control-Allow-Methods = "GET, PUT, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
     Content-Type = "application/json"
