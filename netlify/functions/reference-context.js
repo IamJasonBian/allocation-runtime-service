@@ -2,15 +2,6 @@ const { json, error, options, listBlobs, blobUrl, blobHeaders } = require("./hel
 
 const STORE = "reference-context";
 
-function authenticate(event) {
-  const auth = event.headers["authorization"] || event.headers["Authorization"] || "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== process.env.NETLIFY_AUTH_TOKEN) {
-    return error("Unauthorized — provide Authorization: Bearer <NETLIFY_AUTH_TOKEN>", 401);
-  }
-  return null;
-}
-
 /**
  * PUT /api/reference-context?name=my-dataset.zip&chunk=0&total=10
  *
@@ -179,9 +170,6 @@ async function handleGet(event) {
 
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return options();
-
-  const authError = authenticate(event);
-  if (authError) return authError;
 
   try {
     if (event.httpMethod === "PUT") return await handlePut(event);
