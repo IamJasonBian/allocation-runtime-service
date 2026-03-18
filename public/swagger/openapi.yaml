@@ -219,6 +219,112 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /reference-context:
+    get:
+      summary: List or retrieve reference files
+      description: |
+        Without parameters, lists all stored reference files.
+        With `name`, returns metadata for a chunked upload or the raw file for single-shot uploads.
+        With `name` + `chunk`, returns the raw bytes of a specific chunk.
+      operationId: getReferenceContext
+      tags: [Reference]
+      parameters:
+        - name: name
+          in: query
+          required: false
+          description: "File name (e.g. my-dataset.zip)"
+          schema:
+            type: string
+        - name: chunk
+          in: query
+          required: false
+          description: "Chunk index to retrieve (0-based). Requires `name`."
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: File listing, metadata, or raw file content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceContextListResponse"
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: File or chunk not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Upload a reference file (single or chunked)
+      description: |
+        Stores any file in the reference-context blob store. Accepts any content type.
+
+        **Single-shot upload** (files < 5MB): just provide `name`.
+
+        **Chunked upload** (large files): split your file into chunks and upload each
+        with `name`, `chunk` (0-based index), and `total` (total number of chunks).
+        Each chunk should be ≤ 5MB to stay within Netlify's request body limit.
+
+        Example for a 50MB zip split into 10 chunks:
+        ```
+        for i in $(seq 0 9); do
+          curl -X PUT \
+            "https://route-runtime-service.netlify.app/api/reference-context?name=data.zip&chunk=$i&total=10" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/zip" \
+            --data-binary @chunk_$i
+        done
+        ```
+      operationId: putReferenceContext
+      tags: [Reference]
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: "File name / identifier"
+          schema:
+            type: string
+            example: "my-dataset.zip"
+        - name: chunk
+          in: query
+          required: false
+          description: "Chunk index (0-based). Required for chunked uploads."
+          schema:
+            type: integer
+            example: 0
+        - name: total
+          in: query
+          required: false
+          description: "Total number of chunks. Required for chunked uploads."
+          schema:
+            type: integer
+            example: 10
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+              description: Raw file bytes (any content type accepted)
+      responses:
+        "201":
+          description: File or chunk stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferenceContextPutResponse"
+        "400":
+          description: Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Error:
@@ -546,6 +652,68 @@ components:
               timestamp:
                 type: string
           description: All oncall entries across services (when listing all)
+
+    ReferenceContextListResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 3
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: my-dataset.zip
+              chunked:
+                type: boolean
+                example: true
+
+    ReferenceContextMetaResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: my-dataset.zip
+        chunked:
+          type: boolean
+          example: true
+        total_chunks:
+          type: integer
+          example: 10
+        uploaded_chunks:
+          type: integer
+          example: 7
+        complete:
+          type: boolean
+          example: false
+        content_type:
+          type: string
+          example: application/zip
+        updated_at:
+          type: string
+          format: date-time
+
+    ReferenceContextPutResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Chunk 0/10 stored"
+        name:
+          type: string
+          example: my-dataset.zip
+        chunk:
+          type: integer
+          example: 0
+        total_chunks:
+          type: integer
+          example: 10
+        content_type:
+          type: string
+          example: application/zip
 
     SnapshotResponse:
       type: object

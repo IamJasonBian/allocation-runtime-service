@@ -58,6 +58,11 @@
   to = "/.netlify/functions/mcp-context"
   status = 200
 
+[[redirects]]
+  from = "/api/reference-context"
+  to = "/.netlify/functions/reference-context"
+  status = 200
+
 # Swagger UI
 [[redirects]]
   from = "/docs"
