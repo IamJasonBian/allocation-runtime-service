@@ -7,6 +7,7 @@
     "watch-screenshots": "node scripts/screenshot-watcher.js"
   },
   "dependencies": {
-    "@netlify/blobs": "^8.1.0"
+    "@netlify/blobs": "^8.1.0",
+    "xlsx": "^0.18.5"
   }
 }

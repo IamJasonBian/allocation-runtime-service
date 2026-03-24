@@ -1,0 +1,963 @@
+{
+  "metadata": {
+    "source": "Full Financial Planning.xlsx",
+    "parsedAt": "2026-03-24T03:05:26.654Z",
+    "fiscalYears": [
+      "FY23-Nov",
+      "FY24-May",
+      "FY24-Nov (pre-vest-sizing)",
+      "FY25-May",
+      "FY25-Nov"
+    ]
+  },
+  "fiscalYears": {
+    "FY23-Nov": {
+      "assets": [],
+      "liabilities": []
+    },
+    "FY24-May": {
+      "assets": [],
+      "liabilities": []
+    },
+    "FY24-Nov (pre-vest-sizing)": {
+      "assets": [],
+      "liabilities": []
+    },
+    "FY25-May": {
+      "assets": [
+        {
+          "name": "Stock (AMZN)",
+          "category": "Liquid",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 25265.54
+            },
+            {
+              "month": "2025-06-30",
+              "value": 0
+            },
+            {
+              "month": "2025-07-31",
+              "value": 0
+            },
+            {
+              "month": "2025-08-31",
+              "value": 0
+            },
+            {
+              "month": "2025-09-30",
+              "value": 0
+            },
+            {
+              "month": "2025-10-31",
+              "value": 0
+            },
+            {
+              "month": "2025-11-30",
+              "value": 31535.82
+            }
+          ]
+        },
+        {
+          "name": "401k (Amazon)",
+          "category": "Non-Liquid",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 500
+            },
+            {
+              "month": "2025-06-30",
+              "value": 500
+            },
+            {
+              "month": "2025-07-31",
+              "value": 500
+            },
+            {
+              "month": "2025-08-31",
+              "value": 500
+            },
+            {
+              "month": "2025-09-30",
+              "value": 500
+            },
+            {
+              "month": "2025-10-31",
+              "value": 500
+            },
+            {
+              "month": "2025-11-30",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "name": "Apt Deposit",
+          "category": "Non-Liquid",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 5181.25
+            },
+            {
+              "month": "2025-06-30",
+              "value": 0
+            },
+            {
+              "month": "2025-07-31",
+              "value": 0
+            },
+            {
+              "month": "2025-08-31",
+              "value": 0
+            },
+            {
+              "month": "2025-09-30",
+              "value": 0
+            },
+            {
+              "month": "2025-10-31",
+              "value": 0
+            },
+            {
+              "month": "2025-11-30",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "liabilities": [
+        {
+          "name": "Apt 2",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 1150
+            },
+            {
+              "month": "2025-06-30",
+              "value": 0
+            },
+            {
+              "month": "2025-07-31",
+              "value": 0
+            },
+            {
+              "month": "2025-08-31",
+              "value": 0
+            },
+            {
+              "month": "2025-09-30",
+              "value": 0
+            },
+            {
+              "month": "2025-10-31",
+              "value": 0
+            },
+            {
+              "month": "2025-11-30",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "name": "Apt 1",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 2950
+            },
+            {
+              "month": "2025-06-30",
+              "value": 3900
+            },
+            {
+              "month": "2025-07-31",
+              "value": 3900
+            },
+            {
+              "month": "2025-08-31",
+              "value": 3900
+            },
+            {
+              "month": "2025-09-30",
+              "value": 3900
+            },
+            {
+              "month": "2025-10-31",
+              "value": 3900
+            },
+            {
+              "month": "2025-11-30",
+              "value": 3900
+            }
+          ]
+        },
+        {
+          "name": "Gym",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 0
+            },
+            {
+              "month": "2025-06-30",
+              "value": 400
+            },
+            {
+              "month": "2025-07-31",
+              "value": 400
+            },
+            {
+              "month": "2025-08-31",
+              "value": 400
+            },
+            {
+              "month": "2025-09-30",
+              "value": 400
+            },
+            {
+              "month": "2025-10-31",
+              "value": 400
+            },
+            {
+              "month": "2025-11-30",
+              "value": 400
+            }
+          ]
+        },
+        {
+          "name": "Pros",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 600
+            },
+            {
+              "month": "2025-06-30",
+              "value": 600
+            },
+            {
+              "month": "2025-07-31",
+              "value": 600
+            },
+            {
+              "month": "2025-08-31",
+              "value": 600
+            },
+            {
+              "month": "2025-09-30",
+              "value": 600
+            },
+            {
+              "month": "2025-10-31",
+              "value": 600
+            },
+            {
+              "month": "2025-11-30",
+              "value": 600
+            }
+          ]
+        },
+        {
+          "name": "Subs",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 200
+            },
+            {
+              "month": "2025-06-30",
+              "value": 200
+            },
+            {
+              "month": "2025-07-31",
+              "value": 200
+            },
+            {
+              "month": "2025-08-31",
+              "value": 200
+            },
+            {
+              "month": "2025-09-30",
+              "value": 200
+            },
+            {
+              "month": "2025-10-31",
+              "value": 200
+            },
+            {
+              "month": "2025-11-30",
+              "value": 200
+            }
+          ]
+        },
+        {
+          "name": "AI/Cloud",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 300
+            },
+            {
+              "month": "2025-06-30",
+              "value": 300
+            },
+            {
+              "month": "2025-07-31",
+              "value": 300
+            },
+            {
+              "month": "2025-08-31",
+              "value": 300
+            },
+            {
+              "month": "2025-09-30",
+              "value": 300
+            },
+            {
+              "month": "2025-10-31",
+              "value": 300
+            },
+            {
+              "month": "2025-11-30",
+              "value": 300
+            }
+          ]
+        },
+        {
+          "name": "Flights",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 500
+            },
+            {
+              "month": "2025-06-30",
+              "value": 500
+            },
+            {
+              "month": "2025-07-31",
+              "value": 500
+            },
+            {
+              "month": "2025-08-31",
+              "value": 500
+            },
+            {
+              "month": "2025-09-30",
+              "value": 500
+            },
+            {
+              "month": "2025-10-31",
+              "value": 500
+            },
+            {
+              "month": "2025-11-30",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "name": "Ubers",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 0
+            },
+            {
+              "month": "2025-06-30",
+              "value": 500
+            },
+            {
+              "month": "2025-07-31",
+              "value": 500
+            },
+            {
+              "month": "2025-08-31",
+              "value": 500
+            },
+            {
+              "month": "2025-09-30",
+              "value": 500
+            },
+            {
+              "month": "2025-10-31",
+              "value": 500
+            },
+            {
+              "month": "2025-11-30",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "name": "Misc Expenses",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 3000
+            },
+            {
+              "month": "2025-06-30",
+              "value": 3000
+            },
+            {
+              "month": "2025-07-31",
+              "value": 3000
+            },
+            {
+              "month": "2025-08-31",
+              "value": 3000
+            },
+            {
+              "month": "2025-09-30",
+              "value": 3000
+            },
+            {
+              "month": "2025-10-31",
+              "value": 3000
+            },
+            {
+              "month": "2025-11-30",
+              "value": 3000
+            }
+          ]
+        },
+        {
+          "name": "Net Worth",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 319366.522
+            },
+            {
+              "month": "2025-06-30",
+              "value": 319254.522
+            },
+            {
+              "month": "2025-07-31",
+              "value": 319142.522
+            },
+            {
+              "month": "2025-08-31",
+              "value": 325300.802
+            },
+            {
+              "month": "2025-09-30",
+              "value": 325188.802
+            },
+            {
+              "month": "2025-10-31",
+              "value": 325076.802
+            },
+            {
+              "month": "2025-11-30",
+              "value": 356500.622
+            }
+          ]
+        },
+        {
+          "name": "Net Worth (Liquid)",
+          "category": "General",
+          "fiscalYear": "FY25-May",
+          "values": [
+            {
+              "month": "2025-05-31",
+              "value": 167015.27
+            },
+            {
+              "month": "2025-06-30",
+              "value": 166403.27
+            },
+            {
+              "month": "2025-07-31",
+              "value": 165791.27
+            },
+            {
+              "month": "2025-08-31",
+              "value": 171449.55
+            },
+            {
+              "month": "2025-09-30",
+              "value": 170837.55
+            },
+            {
+              "month": "2025-10-31",
+              "value": 170225.55
+            },
+            {
+              "month": "2025-11-30",
+              "value": 201149.37
+            }
+          ]
+        }
+      ]
+    },
+    "FY25-Nov": {
+      "assets": [
+        {
+          "name": "Stock (AMZN)",
+          "category": "Liquid",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 0
+            },
+            {
+              "month": "2026-01-26",
+              "value": 0
+            },
+            {
+              "month": "2026-02-26",
+              "value": 0
+            },
+            {
+              "month": "2026-04-01",
+              "value": 0
+            },
+            {
+              "month": "2026-05-01",
+              "value": 0
+            },
+            {
+              "month": "2026-06-01",
+              "value": 35000
+            }
+          ]
+        },
+        {
+          "name": "401k (Amazon)",
+          "category": "Non-Liquid",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 500
+            },
+            {
+              "month": "2026-01-26",
+              "value": 500
+            },
+            {
+              "month": "2026-02-26",
+              "value": 500
+            },
+            {
+              "month": "2026-04-01",
+              "value": 500
+            },
+            {
+              "month": "2026-05-01",
+              "value": 500
+            },
+            {
+              "month": "2026-06-01",
+              "value": 500
+            }
+          ]
+        }
+      ],
+      "liabilities": [
+        {
+          "name": "Bank",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 1150
+            },
+            {
+              "month": "2026-01-26",
+              "value": 0
+            },
+            {
+              "month": "2026-02-26",
+              "value": 0
+            },
+            {
+              "month": "2026-04-01",
+              "value": 0
+            },
+            {
+              "month": "2026-05-01",
+              "value": 0
+            },
+            {
+              "month": "2026-06-01",
+              "value": 0
+            }
+          ]
+        },
+        {
+          "name": "Apt 1",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 2950
+            },
+            {
+              "month": "2026-01-26",
+              "value": 3900
+            },
+            {
+              "month": "2026-02-26",
+              "value": 3900
+            },
+            {
+              "month": "2026-04-01",
+              "value": 3900
+            },
+            {
+              "month": "2026-05-01",
+              "value": 3900
+            },
+            {
+              "month": "2026-06-01",
+              "value": 3900
+            }
+          ]
+        },
+        {
+          "name": "Gym",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 0
+            },
+            {
+              "month": "2026-01-26",
+              "value": 400
+            },
+            {
+              "month": "2026-02-26",
+              "value": 400
+            },
+            {
+              "month": "2026-04-01",
+              "value": 400
+            },
+            {
+              "month": "2026-05-01",
+              "value": 400
+            },
+            {
+              "month": "2026-06-01",
+              "value": 400
+            }
+          ]
+        },
+        {
+          "name": "Pros",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 600
+            },
+            {
+              "month": "2026-01-26",
+              "value": 600
+            },
+            {
+              "month": "2026-02-26",
+              "value": 600
+            },
+            {
+              "month": "2026-04-01",
+              "value": 600
+            },
+            {
+              "month": "2026-05-01",
+              "value": 600
+            },
+            {
+              "month": "2026-06-01",
+              "value": 600
+            }
+          ]
+        },
+        {
+          "name": "Subs",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 200
+            },
+            {
+              "month": "2026-01-26",
+              "value": 200
+            },
+            {
+              "month": "2026-02-26",
+              "value": 200
+            },
+            {
+              "month": "2026-04-01",
+              "value": 200
+            },
+            {
+              "month": "2026-05-01",
+              "value": 200
+            },
+            {
+              "month": "2026-06-01",
+              "value": 200
+            }
+          ]
+        },
+        {
+          "name": "AI/Cloud",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 300
+            },
+            {
+              "month": "2026-01-26",
+              "value": 300
+            },
+            {
+              "month": "2026-02-26",
+              "value": 300
+            },
+            {
+              "month": "2026-04-01",
+              "value": 300
+            },
+            {
+              "month": "2026-05-01",
+              "value": 300
+            },
+            {
+              "month": "2026-06-01",
+              "value": 300
+            }
+          ]
+        },
+        {
+          "name": "Margin",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 166.6666667
+            },
+            {
+              "month": "2026-01-26",
+              "value": 166.6666667
+            },
+            {
+              "month": "2026-02-26",
+              "value": 166.6666667
+            },
+            {
+              "month": "2026-04-01",
+              "value": 166.6666667
+            },
+            {
+              "month": "2026-05-01",
+              "value": 166.6666667
+            },
+            {
+              "month": "2026-06-01",
+              "value": 166.6666667
+            }
+          ]
+        },
+        {
+          "name": "Flights",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 500
+            },
+            {
+              "month": "2026-01-26",
+              "value": 500
+            },
+            {
+              "month": "2026-02-26",
+              "value": 500
+            },
+            {
+              "month": "2026-04-01",
+              "value": 500
+            },
+            {
+              "month": "2026-05-01",
+              "value": 500
+            },
+            {
+              "month": "2026-06-01",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "name": "Ubers",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 0
+            },
+            {
+              "month": "2026-01-26",
+              "value": 500
+            },
+            {
+              "month": "2026-02-26",
+              "value": 500
+            },
+            {
+              "month": "2026-04-01",
+              "value": 500
+            },
+            {
+              "month": "2026-05-01",
+              "value": 500
+            },
+            {
+              "month": "2026-06-01",
+              "value": 500
+            }
+          ]
+        },
+        {
+          "name": "Misc Expenses",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 3000
+            },
+            {
+              "month": "2026-01-26",
+              "value": 3000
+            },
+            {
+              "month": "2026-02-26",
+              "value": 3000
+            },
+            {
+              "month": "2026-04-01",
+              "value": 3000
+            },
+            {
+              "month": "2026-05-01",
+              "value": 3000
+            },
+            {
+              "month": "2026-06-01",
+              "value": 3000
+            }
+          ]
+        },
+        {
+          "name": "Net Worth",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 354957.4953
+            },
+            {
+              "month": "2026-01-26",
+              "value": 354678.8287
+            },
+            {
+              "month": "2026-02-26",
+              "value": 354400.162
+            },
+            {
+              "month": "2026-04-01",
+              "value": 354121.4953
+            },
+            {
+              "month": "2026-05-01",
+              "value": 353842.8287
+            },
+            {
+              "month": "2026-06-01",
+              "value": 388564.162
+            }
+          ]
+        },
+        {
+          "name": "Net Worth (Liquid)",
+          "category": "General",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            {
+              "month": "2025-12-01",
+              "value": 199106.2433
+            },
+            {
+              "month": "2026-01-26",
+              "value": 198327.5767
+            },
+            {
+              "month": "2026-02-26",
+              "value": 197548.91
+            },
+            {
+              "month": "2026-04-01",
+              "value": 196770.2433
+            },
+            {
+              "month": "2026-05-01",
+              "value": 195991.5767
+            },
+            {
+              "month": "2026-06-01",
+              "value": 230212.91
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

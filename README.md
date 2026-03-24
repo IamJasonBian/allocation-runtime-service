@@ -7,6 +7,45 @@ Core Services
 * State — https://route-runtime-service.netlify.app/api/state
 
 
+Finance Context (Financial Planning Data)
+
+* **GET** https://route-runtime-service.netlify.app/api/finance-context — Get all financial data
+* **GET** https://route-runtime-service.netlify.app/api/finance-context?fiscalYear=FY25-Nov — Get specific fiscal year
+* **GET** https://route-runtime-service.netlify.app/api/finance-context?category=Liquid — Filter by category
+* **GET** https://route-runtime-service.netlify.app/api/finance-context?assetType=Stock — Filter by asset type
+* **PUT** https://route-runtime-service.netlify.app/api/finance-context — Update finance data (requires auth)
+
+Financial data parsed from "Full Financial Planning.xlsx" with structured assets/liabilities by fiscal year.
+
+**Data Structure:**
+```json
+{
+  "metadata": {
+    "source": "Full Financial Planning.xlsx",
+    "parsedAt": "2026-03-24T03:05:26.654Z",
+    "fiscalYears": ["FY25-May", "FY25-Nov"]
+  },
+  "fiscalYears": {
+    "FY25-Nov": {
+      "assets": [
+        {
+          "name": "Stock (AMZN)",
+          "category": "Liquid",
+          "fiscalYear": "FY25-Nov",
+          "values": [
+            { "month": "2025-05-31", "value": 25265.54 }
+          ]
+        }
+      ],
+      "liabilities": []
+    }
+  }
+}
+```
+
+**Parse Excel:** `node scripts/parse-finance-excel.mjs`
+
+
 Oncall Resolution for TTs (MCP layer)
 
 * **GET** https://route-runtime-service.netlify.app/api/mcp-context?service=allocation-engine-2.0
