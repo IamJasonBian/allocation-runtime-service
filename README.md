@@ -14,23 +14,3 @@ Oncall Resolution for TTs (MCP layer)
 
 **PUT** generates a unix timestamp for subsequent append only operations
 This endpoint requires an instance of NETLIFY_AUTH_TOKEN
-
-
-Screenshot Watcher
-
-Monitors ~/Screenshots for new macOS screenshots and uploads them to mcp-context.
-
-**Setup (one-time):**
-```bash
-# Redirect macOS screenshots to ~/Screenshots (avoids TCC permission issues)
-mkdir -p ~/Screenshots
-defaults write com.apple.screencapture location ~/Screenshots
-killall SystemUIServer
-```
-
-**Start the watcher:**
-```bash
-NETLIFY_AUTH_TOKEN=nfp_EJhNguVjnSF5dF2KnJjxPyU6Ghq9nsVE7201 WATCH_DIR=$HOME/Screenshots npm run watch-screenshots
-```
-
-**Verify it's running:** take a screenshot with `Cmd+Shift+3` — you should see a `✓ Uploaded` line within ~2 seconds.
